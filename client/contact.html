@@ -1,0 +1,62 @@
+﻿<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+      <nav class="navbar navbar-default" style="background-color: plum;">
+          <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                  <li><a href="/index"><b>Home</b></a></li>
+                  <li><a href="/contact"><b>Contact</b></a></li>
+                  <li><a href="/addContact"><b>Add Contact</b></a></li>
+                  <li><a href="/stock"><b>Stock Page</b></a></li>
+                  <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+              </ul>
+          </div>
+      </nav>
+      <br><br>
+      <div class="container">
+          <table class="table" id="contactTable">
+              <thead>
+                  <tr style="background-color: deeppink;">
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Favorite Place</th>
+                  </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+      </div>
+      <script type="text/javascript">
+      // TODO: Fetch contact.json data from the server and display it in the contactTable
+        var xmlhttp = new XMLHttpRequest();
+        var url = "/getListOfContacts";
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log(url);
+                var dbResult = JSON.parse(xmlhttp.responseText);
+                console.log(dbResult);
+                process(dbResult);
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+        function process(arr) {
+            var out = '';
+            for (var i = 0; i < arr.length; i++) {
+                out += '<tr>' + '<td>' +arr[i].contact_name +'</td>' + '<td>' +arr[i].contact_email +'</td>' + '<td>'+arr[i].contact_address +'</td>' +
+                '<td>'+arr[i].contact_phone +'</td>' + '<td>' +'<a href="'+arr[i].contact_favoriteplaceurl + '">' + arr[i].contact_favoriteplace +'</a>'+'</td></tr>';
+            }
+            $("#contactTable").append(out);
+        }
+    </script>
+  </body>
+</html>
